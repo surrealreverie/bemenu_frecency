@@ -3,6 +3,8 @@
 MAX_TIMESTAMPS=10
 HIST_FILE="${XDG_CACHE_HOME:-"$HOME/.cache"}/bemenu_history"
 
+[ ! -f "$HIST_FILE" ] && touch "$HIST_FILE"
+
 # Input_list: list of commands names seperated by newlines.
 { IFS=:; ls --time-style=+%s -lHu $PATH | awk -v OFS='|' '$1 ~ /^(-|l).*x/ {print $7, 0, $6}'; } |
     # Input_processing: Scores are calculated and commands are sorted by thier
