@@ -9,7 +9,11 @@ HIST_FILE="${XDG_CACHE_HOME:-"$HOME/.cache"}/bemenu_history"
 { IFS=:; ls -lH $PATH | awk '$1 ~ /^(-|l).*x/ {print $9}'; } |
     # Input_processing: Scores are calculated and commands are sorted by thier
     # scores.
-    awk -F"|" -v t="$(date +%s)" '!cnt[$1]++ {
+    awk -F"|" -v t="$(date +%s)" '
+    BEGIN {
+        OFS="|";
+    }
+    !cnt[$1]++ {
         score = 0;
         if ($2) {
             for (i = 3; i <= NF; i++) {
@@ -24,7 +28,7 @@ HIST_FILE="${XDG_CACHE_HOME:-"$HOME/.cache"}/bemenu_history"
             score = $2 * score / (NF - 2);
         }
         print $1, score;
-    }' "$HIST_FILE" - | sort -k2,2rn | cut -d' ' -f 1 | bemenu "$@" |
+    }' "$HIST_FILE" - | sort -t'|' -k2,2rn | cut -d'|' -f 1 | bemenu "$@" |
     # Output_processing: Selected command name's timestamp(recency) and launch
     # count(frequency) is updated.
     awk -F"|" -v t="$(date +%s)" -v f="$HIST_FILE" -v n="$MAX_TIMESTAMPS" '
