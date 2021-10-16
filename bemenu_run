@@ -5,8 +5,9 @@ HIST_FILE="${XDG_CACHE_HOME:-"$HOME/.cache"}/bemenu_history"
 
 [ ! -f "$HIST_FILE" ] && touch "$HIST_FILE"
 
-# Input_list: list of commands names seperated by newlines.
-{ IFS=:; ls -lH $PATH | awk '$1 ~ /^(-|l).*x/ {print $9}'; } |
+# Input_list: List of commands names seperated by newlines.
+{   IFS=:;
+    ls -lH $PATH | awk '$1 ~ /^(-|l).*x/ {print $9}'; } |
     # Input_processing: Scores are calculated and commands are sorted by thier
     # scores.
     awk -F"|" -v t="$(date +%s)" '
@@ -55,5 +56,5 @@ HIST_FILE="${XDG_CACHE_HOME:-"$HOME/.cache"}/bemenu_history"
         for (c in is_used)
             print c, 1, t > f;
     }' - "$HIST_FILE" |
-    # Output_launch: Launch selected commands
+    # Output_launch: Launch selected commands.
     while read cmd; do ${SHELL:-"/bin/bash"} -c "$cmd" & done
