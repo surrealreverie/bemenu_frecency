@@ -1,0 +1,17 @@
+--- bemenu_run	2021-10-19 21:25:52.742225613 +0530
++++ bemenu_run_zsh_alias_functions	2021-10-19 21:25:14.508224521 +0530
+@@ -9,6 +9,8 @@
+ 
+ # Input_list: List of commands names seperated by newlines.
+ {   IFS=:;
++    # List alias and functions.
++    ${SHELL:-"/bin/zsh"} -c -i 'print -rl -- ${(k)aliases} ${(k)functions}';
+     # List binaries in PATH.
+     ls -lH $PATH | awk '$1 ~ /^(-|l).*x/ {print $9}'; } |
+     # Input_processing: Scores are calculated and commands are sorted by thier
+@@ -60,4 +62,4 @@
+             print c, 1, t > f;
+     }' - "$HIST_FILE" |
+     # Output_launch: Launch selected commands.
+-    while read cmd; do ${SHELL:-"/bin/bash"} -c "$cmd" & done
++    while read cmd; do ${SHELL:-"/bin/zsh"} -c -i "$cmd" & done
