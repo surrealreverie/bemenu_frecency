@@ -1,12 +1,15 @@
 #!/bin/sh
 
+# Number of timestamps to be stored per application.
 MAX_TIMESTAMPS=10
+# File location for storing the historical data.
 HIST_FILE="${XDG_CACHE_HOME:-"$HOME/.cache"}/bemenu_history"
 
 [ ! -f "$HIST_FILE" ] && touch "$HIST_FILE"
 
 # Input_list: List of commands names seperated by newlines.
 {   IFS=:;
+    # List binaries in PATH.
     ls -lH $PATH | awk '$1 ~ /^(-|l).*x/ {print $9}'; } |
     # Input_processing: Scores are calculated and commands are sorted by thier
     # scores.
